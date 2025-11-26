@@ -13,7 +13,15 @@ jobs:
 
     steps:
       - name: Call rotate-monkey endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
+          # Trim any trailing newlines/carriage returns from the secret (common issue with GitHub secrets)
+          CRON_SECRET_TRIMMED=$(printf '%s' "$CRON_SECRET" | tr -d '\n\r')
+          echo "Making POST request to rotate-monkey endpoint..."
           curl -X POST \
-            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            --header "x-cron-secret: ${CRON_SECRET_TRIMMED}" \
+            --write-out "\nHTTP Status: %{http_code}\n" \
+            --fail-with-body \
+            --show-error \
             https://monkey-wordle.vercel.app/api/rotate-monkey
