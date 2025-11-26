@@ -50,8 +50,8 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
 
         <div className="space-y-3 text-green-900">
           <p>Guess the monkey species from the blurred image! Each incorrect guess will reduce the blur slightly.</p>
-          <p>After 5 guesses, you&apos;ll get a hint. After 6 guesses, you&apos;ll get another hint.</p>
-          <p className="font-semibold">You have 7 guesses total to solve the puzzle!</p>
+          <p>After 4 guesses, you&apos;ll get a hint. After 5 guesses, you&apos;ll get another hint.</p>
+          <p className="font-semibold">You have 6 guesses total to solve the puzzle!</p>
         </div>
       </div>
     </div>

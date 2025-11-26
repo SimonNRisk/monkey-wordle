@@ -74,8 +74,8 @@ export default function MonkeyPage() {
         <Image
           src={puzzle.imageUrl}
           alt={puzzle.displayName}
-          width={400}
-          height={400}
+          width={300}
+          height={300}
           className={`${blurClass} transition-all duration-300 rounded-xl`}
         />
       </div>
