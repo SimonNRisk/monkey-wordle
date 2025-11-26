@@ -1,0 +1,19 @@
+name: Daily Monkey Puzzle
+
+on:
+  schedule:
+    # Runs every day at 05:00 UTC (midnight EST)
+    - cron: '0 5 * * *'
+  # Enable manual triggering from the GitHub UI
+  workflow_dispatch:
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call rotate-monkey endpoint
+        run: |
+          curl -X POST \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            ${{ secrets.APP_URL }}/api/rotate-monkey
