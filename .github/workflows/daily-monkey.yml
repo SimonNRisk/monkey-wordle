@@ -16,4 +16,4 @@ jobs:
         run: |
           curl -X POST \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
-            ${{ secrets.APP_URL }}/api/rotate-monkey
+            https://monkey-wordle.vercel.app/api/rotate-monkey
