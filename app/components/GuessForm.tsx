@@ -1,22 +1,21 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import { checkFuzzyMatch } from '@/lib/fuzzyMatch'
 
 interface GuessFormProps {
-  correctSlug: string
+  correctAnswer: string
   onGuess: (guess: string, isCorrect: boolean) => void
 }
 
-export default function GuessForm({ correctSlug, onGuess }: GuessFormProps) {
+export default function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
   const [guess, setGuess] = useState('')
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    const normalizedGuess = guess.trim().toLowerCase()
-    const normalizedSlug = correctSlug.toLowerCase()
-
-    const isCorrect = normalizedGuess === normalizedSlug
-    onGuess(guess.trim(), isCorrect)
+    const trimmedGuess = guess.trim()
+    const isCorrect = checkFuzzyMatch(trimmedGuess, correctAnswer)
+    onGuess(trimmedGuess, isCorrect)
     setGuess('')
   }
 

@@ -51,14 +51,14 @@ export default function MonkeyPage() {
         />
       </div>
 
-      <GuessGrid guesses={guesses} correctSlug={puzzle.slug} />
+      <GuessGrid guesses={guesses} correctAnswer={puzzle.displayName} />
 
       {isSolved ? (
         <Correct displayName={puzzle.displayName} />
       ) : isFailed ? (
         <Failure displayName={puzzle.displayName} />
       ) : (
-        <GuessForm correctSlug={puzzle.slug} onGuess={handleGuess} />
+        <GuessForm correctAnswer={puzzle.displayName} onGuess={handleGuess} />
       )}
     </main>
   )

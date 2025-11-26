@@ -1,13 +1,15 @@
+import { checkFuzzyMatch } from '@/lib/fuzzyMatch'
+
 interface GuessGridProps {
   guesses: string[]
-  correctSlug: string
+  correctAnswer: string
 }
 
-export default function GuessGrid({ guesses, correctSlug }: GuessGridProps) {
+export default function GuessGrid({ guesses, correctAnswer }: GuessGridProps) {
   return (
     <div className="flex flex-col gap-2">
       {guesses.map((guess, index) => {
-        const isCorrect = guess.toLowerCase() === correctSlug.toLowerCase()
+        const isCorrect = checkFuzzyMatch(guess, correctAnswer)
         return (
           <div
             key={index}
