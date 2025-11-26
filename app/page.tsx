@@ -15,7 +15,7 @@ export default function MonkeyPage() {
   const [puzzle, setPuzzle] = useState<{ imageUrl: string; displayName: string; slug: string } | null>(null)
   const [guesses, setGuesses] = useState<string[]>([])
 
-  const blurClass = getBlur(numberOfGuesses)
+  const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
 
   useEffect(() => {
     getTodayPuzzle()
