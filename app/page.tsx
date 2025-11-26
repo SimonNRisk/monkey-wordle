@@ -9,6 +9,7 @@ import GuessGrid from './components/GuessGrid'
 import Correct from './components/Correct'
 import Failure from './components/Failure'
 import InstructionsModal from './components/InstructionsModal'
+import Footer from './components/Footer'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -104,6 +105,8 @@ export default function MonkeyPage() {
       ) : (
         <GuessForm correctAnswer={puzzle.displayName} onGuess={handleGuess} />
       )}
+
+      <Footer />
     </main>
   )
 }
