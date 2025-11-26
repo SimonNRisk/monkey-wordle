@@ -38,7 +38,18 @@ export default function MonkeyPage() {
   }
 
   if (!puzzle) {
-    return <main className="min-h-screen flex items-center justify-center">No monkey set for today yet.</main>
+    return (
+      <main className="min-h-screen flex items-center justify-center px-4 relative">
+        <div
+          className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/jungle-background.webp)' }}
+        />
+        <div className="fixed inset-0 -z-10 bg-green-900/40" />
+        <div className="text-center bg-yellow-100/95 border-4 border-yellow-400 rounded-2xl px-8 py-6 shadow-2xl">
+          <p className="text-lg font-bold text-green-900">No monkey set for today yet.</p>
+        </div>
+      </main>
+    )
   }
 
   const isFailed = numberOfGuesses >= 7 && !isSolved
@@ -46,32 +57,38 @@ export default function MonkeyPage() {
   const showSecondaryHint = numberOfGuesses >= 6 && !isSolved
 
   return (
-    <main className="min-h-screen flex flex-col items-center gap-6 pt-20">
-      <h1 className="text-3xl font-bold">Monkey of the Day</h1>
+    <main className="min-h-screen flex flex-col items-center gap-6 pt-12 pb-12 px-4 relative">
+      <div
+        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/jungle-background.webp)' }}
+      />
+      <div className="fixed inset-0 -z-10 bg-green-900/40" />
 
-      <div className="overflow-hidden rounded-xl shadow-lg">
+      <h1 className="text-3xl font-bold text-yellow-300 drop-shadow-lg mb-2 text-center">Monkey of the Day</h1>
+
+      <div className="overflow-hidden rounded-2xl shadow-2xl border-4 border-yellow-400 bg-white/10 backdrop-blur-sm p-2">
         <Image
           src={puzzle.imageUrl}
           alt={puzzle.displayName}
           width={400}
           height={400}
-          className={`${blurClass} transition-all duration-300`}
+          className={`${blurClass} transition-all duration-300 rounded-xl`}
         />
       </div>
 
       <GuessGrid guesses={guesses} correctAnswer={puzzle.displayName} />
 
       {showPrimaryHint && puzzle.hintPrimary && (
-        <div className="text-center text-gray-600 italic">
-          <p className="text-sm font-semibold mb-1">Hint:</p>
-          <p>{puzzle.hintPrimary}</p>
+        <div className="text-center bg-yellow-100/90 border-2 border-yellow-400 rounded-xl px-6 py-4 shadow-lg max-w-md">
+          <p className="text-sm font-semibold text-green-800 mb-1">Hint:</p>
+          <p className="text-green-900">{puzzle.hintPrimary}</p>
         </div>
       )}
 
       {showSecondaryHint && puzzle.hintSecondary && (
-        <div className="text-center text-gray-600 italic">
-          <p className="text-sm font-semibold mb-1">Another Hint:</p>
-          <p>{puzzle.hintSecondary}</p>
+        <div className="text-center bg-yellow-100/90 border-2 border-yellow-400 rounded-xl px-6 py-4 shadow-lg max-w-md">
+          <p className="text-sm font-semibold text-green-800 mb-1">Another Hint:</p>
+          <p className="text-green-900">{puzzle.hintSecondary}</p>
         </div>
       )}
 
