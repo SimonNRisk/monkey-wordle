@@ -10,6 +10,7 @@ import { Correct } from './components/Correct'
 import { Failure } from './components/Failure'
 import { InstructionsModal } from './components/InstructionsModal'
 import { Footer } from './components/Footer'
+import { HintModal } from './components/HintModal'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -24,6 +25,9 @@ export default function MonkeyPage() {
     hintSecondary: string | null
   } | null>(null)
   const [guesses, setGuesses] = useState<string[]>([])
+  // TODO: after hint showed, we want to persist on the UI, probably to the right of the monkey photo
+  const [showPrimaryHint, setShowPrimaryHint] = useState(false)
+  const [showSecondaryHint, setShowSecondaryHint] = useState(false)
 
   const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
 
@@ -32,6 +36,14 @@ export default function MonkeyPage() {
       .then(setPuzzle)
       .catch(() => {})
   }, [])
+
+  useEffect(() => {
+    if (numberOfGuesses === 4) {
+      setShowPrimaryHint(true)
+    } else if (numberOfGuesses === 5) {
+      setShowSecondaryHint(true)
+    }
+  }, [numberOfGuesses])
 
   const handleGuess = (guess: string, isCorrect: boolean) => {
     setGuesses([...guesses, guess])
@@ -57,8 +69,6 @@ export default function MonkeyPage() {
   }
 
   const isFailed = numberOfGuesses >= 6 && !isSolved
-  const showPrimaryHint = numberOfGuesses >= 4 && !isSolved
-  const showSecondaryHint = numberOfGuesses >= 5 && !isSolved
 
   return (
     <main className="min-h-screen flex flex-col items-center gap-3 pt-12 pb-12 px-4 relative">
@@ -83,17 +93,11 @@ export default function MonkeyPage() {
       <GuessGrid guesses={guesses} correctAnswer={puzzle.displayName} />
 
       {showPrimaryHint && puzzle.hintPrimary && (
-        <div className="text-center bg-yellow-100/90 border-2 border-yellow-400 rounded-xl px-6 py-4 shadow-lg max-w-md">
-          <p className="text-sm font-semibold text-green-800 mb-1">Hint:</p>
-          <p className="text-green-900">{puzzle.hintPrimary}</p>
-        </div>
+        <HintModal hint={puzzle.hintPrimary} isOpen={showPrimaryHint} onClose={() => setShowPrimaryHint(false)} />
       )}
 
       {showSecondaryHint && puzzle.hintSecondary && (
-        <div className="text-center bg-yellow-100/90 border-2 border-yellow-400 rounded-xl px-6 py-4 shadow-lg max-w-md">
-          <p className="text-sm font-semibold text-green-800 mb-1">Another Hint:</p>
-          <p className="text-green-900">{puzzle.hintSecondary}</p>
-        </div>
+        <HintModal hint={puzzle.hintSecondary} isOpen={showSecondaryHint} onClose={() => setShowSecondaryHint(false)} />
       )}
 
       {isSolved ? (
