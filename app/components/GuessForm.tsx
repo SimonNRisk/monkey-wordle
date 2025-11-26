@@ -4,7 +4,7 @@ import { useState, FormEvent } from 'react'
 
 interface GuessFormProps {
   correctSlug: string
-  onGuess: (isCorrect: boolean) => void
+  onGuess: (guess: string, isCorrect: boolean) => void
 }
 
 export default function GuessForm({ correctSlug, onGuess }: GuessFormProps) {
@@ -16,11 +16,7 @@ export default function GuessForm({ correctSlug, onGuess }: GuessFormProps) {
     const normalizedSlug = correctSlug.toLowerCase()
 
     const isCorrect = normalizedGuess === normalizedSlug
-    if (isCorrect) {
-      console.log('correct')
-    }
-
-    onGuess(isCorrect)
+    onGuess(guess.trim(), isCorrect)
     setGuess('')
   }
 

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
 import GuessForm from './components/GuessForm'
+import GuessGrid from './components/GuessGrid'
 import Correct from './components/Correct'
 import Failure from './components/Failure'
 
@@ -12,6 +13,8 @@ export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
   const [isSolved, setIsSolved] = useState(false)
   const [puzzle, setPuzzle] = useState<{ imageUrl: string; displayName: string; slug: string } | null>(null)
+  const [guesses, setGuesses] = useState<string[]>([])
+
   const blurClass = getBlur(numberOfGuesses)
 
   useEffect(() => {
@@ -20,7 +23,8 @@ export default function MonkeyPage() {
       .catch(() => {})
   }, [])
 
-  const handleGuess = (isCorrect: boolean) => {
+  const handleGuess = (guess: string, isCorrect: boolean) => {
+    setGuesses([...guesses, guess])
     setNumberOfGuesses(numberOfGuesses + 1)
     if (isCorrect) {
       setIsSolved(true)
@@ -46,6 +50,8 @@ export default function MonkeyPage() {
           className={`${blurClass} transition-all duration-300`}
         />
       </div>
+
+      <GuessGrid guesses={guesses} correctSlug={puzzle.slug} />
 
       {isSolved ? (
         <Correct displayName={puzzle.displayName} />
