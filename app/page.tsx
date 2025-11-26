@@ -8,10 +8,13 @@ import GuessForm from './components/GuessForm'
 import GuessGrid from './components/GuessGrid'
 import Correct from './components/Correct'
 import Failure from './components/Failure'
+import InstructionsModal from './components/InstructionsModal'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
   const [isSolved, setIsSolved] = useState(false)
+  // TODO: use local storage to store the state of this
+  const [showInstructions, setShowInstructions] = useState(true)
   const [puzzle, setPuzzle] = useState<{
     imageUrl: string
     displayName: string
@@ -58,6 +61,8 @@ export default function MonkeyPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center gap-6 pt-12 pb-12 px-4 relative">
+      <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
+
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: 'url(/jungle-background.webp)' }}
