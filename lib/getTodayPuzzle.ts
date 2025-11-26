@@ -14,7 +14,9 @@ export async function getTodayPuzzle() {
       species:species_id (
         slug,
         display_name,
-        label
+        label,
+        hint_primary,
+        hint_secondary
       )
     `
     )
@@ -28,6 +30,8 @@ export async function getTodayPuzzle() {
     date: data.puzzle_date,
     imageUrl: urlData.publicUrl,
     slug: data.species.slug,
-    displayName: data.species.display_name
+    displayName: data.species.display_name,
+    hintPrimary: data.species.hint_primary,
+    hintSecondary: data.species.hint_secondary
   }
 }

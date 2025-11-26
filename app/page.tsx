@@ -12,7 +12,13 @@ import Failure from './components/Failure'
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
   const [isSolved, setIsSolved] = useState(false)
-  const [puzzle, setPuzzle] = useState<{ imageUrl: string; displayName: string; slug: string } | null>(null)
+  const [puzzle, setPuzzle] = useState<{
+    imageUrl: string
+    displayName: string
+    slug: string
+    hintPrimary: string | null
+    hintSecondary: string | null
+  } | null>(null)
   const [guesses, setGuesses] = useState<string[]>([])
 
   const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
@@ -35,7 +41,9 @@ export default function MonkeyPage() {
     return <main className="min-h-screen flex items-center justify-center">No monkey set for today yet.</main>
   }
 
-  const isFailed = numberOfGuesses >= 6 && !isSolved
+  const isFailed = numberOfGuesses >= 7 && !isSolved
+  const showPrimaryHint = numberOfGuesses >= 5 && !isSolved
+  const showSecondaryHint = numberOfGuesses >= 6 && !isSolved
 
   return (
     <main className="min-h-screen flex flex-col items-center gap-6 pt-20">
@@ -52,6 +60,20 @@ export default function MonkeyPage() {
       </div>
 
       <GuessGrid guesses={guesses} correctAnswer={puzzle.displayName} />
+
+      {showPrimaryHint && puzzle.hintPrimary && (
+        <div className="text-center text-gray-600 italic">
+          <p className="text-sm font-semibold mb-1">Hint:</p>
+          <p>{puzzle.hintPrimary}</p>
+        </div>
+      )}
+
+      {showSecondaryHint && puzzle.hintSecondary && (
+        <div className="text-center text-gray-600 italic">
+          <p className="text-sm font-semibold mb-1">Another Hint:</p>
+          <p>{puzzle.hintSecondary}</p>
+        </div>
+      )}
 
       {isSolved ? (
         <Correct displayName={puzzle.displayName} />
