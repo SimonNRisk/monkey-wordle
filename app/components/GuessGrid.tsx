@@ -7,7 +7,7 @@ interface GuessGridProps {
 
 export function GuessGrid({ guesses, correctAnswer }: GuessGridProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       {guesses.map((guess, index) => {
         const isCorrect = checkFuzzyMatch(guess, correctAnswer)
         return (

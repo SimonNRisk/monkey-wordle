@@ -56,12 +56,12 @@ export default function MonkeyPage() {
     )
   }
 
-  const isFailed = numberOfGuesses >= 7 && !isSolved
-  const showPrimaryHint = numberOfGuesses >= 5 && !isSolved
-  const showSecondaryHint = numberOfGuesses >= 6 && !isSolved
+  const isFailed = numberOfGuesses >= 6 && !isSolved
+  const showPrimaryHint = numberOfGuesses >= 4 && !isSolved
+  const showSecondaryHint = numberOfGuesses >= 5 && !isSolved
 
   return (
-    <main className="min-h-screen flex flex-col items-center gap-6 pt-12 pb-12 px-4 relative">
+    <main className="min-h-screen flex flex-col items-center gap-3 pt-12 pb-12 px-4 relative">
       <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
 
       <div
@@ -69,8 +69,6 @@ export default function MonkeyPage() {
         style={{ backgroundImage: 'url(/jungle-background.webp)' }}
       />
       <div className="fixed inset-0 -z-10 bg-green-900/40" />
-
-      <h1 className="text-3xl font-bold text-yellow-300 drop-shadow-lg mb-2 text-center">Monkey of the Day</h1>
 
       <div className="overflow-hidden rounded-2xl shadow-2xl border-4 border-yellow-400 bg-white/10 backdrop-blur-sm p-2">
         <Image

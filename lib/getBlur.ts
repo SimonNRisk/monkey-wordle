@@ -3,15 +3,12 @@ export function getBlur(numberOfGuesses: number) {
 
   switch (numberOfGuesses) {
     case 0:
-      blurClass = 'blur-lg'
-      break
-    case 1:
       blurClass = 'blur-md'
       break
-    case 2:
+    case 1:
       blurClass = 'blur-sm'
       break
-    case 3:
+    case 2:
       blurClass = 'blur-xs'
       break
     default:
