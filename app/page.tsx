@@ -5,9 +5,12 @@ import Image from 'next/image'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
 import GuessForm from './components/GuessForm'
+import Correct from './components/Correct'
+import Failure from './components/Failure'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
+  const [isSolved, setIsSolved] = useState(false)
   const [puzzle, setPuzzle] = useState<{ imageUrl: string; displayName: string; slug: string } | null>(null)
   const blurClass = getBlur(numberOfGuesses)
 
@@ -17,9 +20,18 @@ export default function MonkeyPage() {
       .catch(() => {})
   }, [])
 
+  const handleGuess = (isCorrect: boolean) => {
+    setNumberOfGuesses(numberOfGuesses + 1)
+    if (isCorrect) {
+      setIsSolved(true)
+    }
+  }
+
   if (!puzzle) {
     return <main className="min-h-screen flex items-center justify-center">No monkey set for today yet.</main>
   }
+
+  const isFailed = numberOfGuesses >= 6 && !isSolved
 
   return (
     <main className="min-h-screen flex flex-col items-center gap-6 pt-20">
@@ -35,7 +47,13 @@ export default function MonkeyPage() {
         />
       </div>
 
-      <GuessForm correctSlug={puzzle.slug} onGuess={() => setNumberOfGuesses(numberOfGuesses + 1)} />
+      {isSolved ? (
+        <Correct displayName={puzzle.displayName} />
+      ) : isFailed ? (
+        <Failure displayName={puzzle.displayName} />
+      ) : (
+        <GuessForm correctSlug={puzzle.slug} onGuess={handleGuess} />
+      )}
     </main>
   )
 }
