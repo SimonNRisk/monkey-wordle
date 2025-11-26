@@ -28,11 +28,16 @@ export async function POST(req: Request) {
 
   const today = new Date().toISOString().split('T')[0]
 
-  await supabase.from('daily_monkey_puzzles').upsert({
-    puzzle_date: today,
-    species_id: randomSpecies.id,
-    image_path: imagePath
-  })
+  await supabase.from('daily_monkey_puzzles').upsert(
+    {
+      puzzle_date: today,
+      species_id: randomSpecies.id,
+      image_path: imagePath
+    },
+    {
+      onConflict: 'puzzle_date'
+    }
+  )
 
   return NextResponse.json({
     date: today,
