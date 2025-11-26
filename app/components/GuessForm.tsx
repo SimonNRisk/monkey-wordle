@@ -8,7 +8,7 @@ interface GuessFormProps {
   onGuess: (guess: string, isCorrect: boolean) => void
 }
 
-export default function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
+export function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
   const [guess, setGuess] = useState('')
 
   const handleSubmit = (e: FormEvent) => {

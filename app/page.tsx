@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
-import GuessForm from './components/GuessForm'
-import GuessGrid from './components/GuessGrid'
-import Correct from './components/Correct'
-import Failure from './components/Failure'
-import InstructionsModal from './components/InstructionsModal'
-import Footer from './components/Footer'
+import { GuessForm } from './components/GuessForm'
+import { GuessGrid } from './components/GuessGrid'
+import { Correct } from './components/Correct'
+import { Failure } from './components/Failure'
+import { InstructionsModal } from './components/InstructionsModal'
+import { Footer } from './components/Footer'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)

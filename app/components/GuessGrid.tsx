@@ -5,7 +5,7 @@ interface GuessGridProps {
   correctAnswer: string
 }
 
-export default function GuessGrid({ guesses, correctAnswer }: GuessGridProps) {
+export function GuessGrid({ guesses, correctAnswer }: GuessGridProps) {
   return (
     <div className="flex flex-col gap-3">
       {guesses.map((guess, index) => {

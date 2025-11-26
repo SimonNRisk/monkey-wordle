@@ -1,4 +1,4 @@
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="mt-auto pt-8 text-center">
       <p className="text-white text-sm">

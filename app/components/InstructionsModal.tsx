@@ -9,7 +9,7 @@ interface InstructionsModalProps {
   onClose: () => void
 }
 
-export default function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
+export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
 
   useClickOutside(modalRef, onClose, isOpen)
