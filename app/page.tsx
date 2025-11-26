@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
+import GuessForm from './components/GuessForm'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -34,9 +35,7 @@ export default function MonkeyPage() {
         />
       </div>
 
-      <p className="text-gray-500 text-sm">
-        (debug) {puzzle.displayName} — {puzzle.slug}
-      </p>
+      <GuessForm correctSlug={puzzle.slug} onGuess={() => setNumberOfGuesses(numberOfGuesses + 1)} />
     </main>
   )
 }
