@@ -26,11 +26,13 @@ export async function POST(req: Request) {
   const randomFile = files[Math.floor(Math.random() * files.length)]
   const imagePath = `${randomSpecies.label}/${randomFile.name}`
 
-  const today = new Date().toISOString().split('T')[0]
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  const tomorrow = d.toISOString().split('T')[0]
 
   await supabase.from('daily_monkey_puzzles').upsert(
     {
-      puzzle_date: today,
+      puzzle_date: tomorrow,
       species_id: randomSpecies.id,
       image_path: imagePath
     },
@@ -40,7 +42,7 @@ export async function POST(req: Request) {
   )
 
   return NextResponse.json({
-    date: today,
+    date: tomorrow,
     species: randomSpecies.slug,
     imagePath
   })
