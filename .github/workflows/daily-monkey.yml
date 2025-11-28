@@ -14,6 +14,21 @@ jobs:
     steps:
       - name: Call rotate-monkey endpoint
         run: |
-          curl -X POST \
+          echo "Calling rotate-monkey endpoint..."
+          response=$(curl -X POST \
+            -L \
+            -f \
+            -w "\nHTTP Status: %{http_code}\n" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
-            ${{ secrets.APP_URL }}/api/rotate-monkey
+            -H "Content-Type: application/json" \
+            ${{ secrets.APP_URL }}/api/rotate-monkey)
+
+          echo "Response:"
+          echo "$response"
+
+          if [ $? -eq 0 ]; then
+            echo "Successfully rotated monkey puzzle!"
+          else
+            echo "Failed to rotate monkey puzzle"
+            exit 1
+          fi

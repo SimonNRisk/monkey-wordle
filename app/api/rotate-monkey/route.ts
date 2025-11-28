@@ -41,9 +41,14 @@ export async function POST(req: Request) {
     }
   )
 
-  return NextResponse.json({
-    date: tomorrow,
-    species: randomSpecies.slug,
-    imagePath
-  })
+  return NextResponse.json(
+    {
+      success: true,
+      message: 'Monkey puzzle rotated successfully',
+      date: tomorrow,
+      species: randomSpecies.slug,
+      imagePath
+    },
+    { status: 200 }
+  )
 }
