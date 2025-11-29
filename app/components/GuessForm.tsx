@@ -21,21 +21,14 @@ export function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 w-[300px]">
       <input
         type="text"
-        className="border-4 border-yellow-400 rounded-xl px-6 py-3 font-semibold bg-white/95 shadow-lg focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:border-yellow-500 text-green-900 placeholder-green-600"
+        className="flex-1 border-4 border-yellow-400 rounded-xl px-6 py-3 font-semibold bg-white/95 shadow-lg focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:border-yellow-500 text-green-900 placeholder-green-600"
         placeholder="Enter your guess..."
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
       />
-      <button
-        type="submit"
-        disabled={!guess.trim()}
-        className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg border-4 border-green-800 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-green-600"
-      >
-        Guess!
-      </button>
     </form>
   )
 }
