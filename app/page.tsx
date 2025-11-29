@@ -1,16 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
-import { GuessForm } from './components/GuessForm'
-import { GuessGrid } from './components/GuessGrid'
-import { Correct } from './components/Correct'
-import { Failure } from './components/Failure'
 import { InstructionsModal } from './components/InstructionsModal'
 import { Footer } from './components/Footer'
-import { HintModal } from './components/HintModal'
+import { HintModals } from './components/HintModals'
+import { HintDisplay } from './components/HintDisplay'
+import { GameColumn } from './components/GameColumn'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -25,9 +22,10 @@ export default function MonkeyPage() {
     hintSecondary: string | null
   } | null>(null)
   const [guesses, setGuesses] = useState<string[]>([])
-  // TODO: after hint showed, we want to persist on the UI, probably to the right of the monkey photo
   const [showPrimaryHint, setShowPrimaryHint] = useState(false)
   const [showSecondaryHint, setShowSecondaryHint] = useState(false)
+  const [shownPrimaryHint, setShownPrimaryHint] = useState<string | null>(null)
+  const [shownSecondaryHint, setShownSecondaryHint] = useState<string | null>(null)
 
   const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
 
@@ -71,7 +69,7 @@ export default function MonkeyPage() {
   const isFailed = numberOfGuesses >= 6 && !isSolved
 
   return (
-    <main className="min-h-screen flex flex-col items-center gap-3 pt-12 pb-12 px-4 relative">
+    <main className="min-h-screen flex flex-col pt-12 pb-12 px-4 relative">
       <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
 
       <div
@@ -80,34 +78,39 @@ export default function MonkeyPage() {
       />
       <div className="fixed inset-0 -z-10 bg-green-900/40" />
 
-      <div className="overflow-hidden rounded-2xl shadow-2xl border-4 border-yellow-400 bg-white/10 backdrop-blur-sm p-2">
-        <Image
-          src={puzzle.imageUrl}
-          alt={puzzle.displayName}
-          width={300}
-          height={300}
-          unoptimized
-          className={`${blurClass} transition-all duration-300 rounded-xl`}
-        />
+      <div className="grid grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
+        <div></div>
+        <div className="flex justify-center">
+          <GameColumn
+            imageUrl={puzzle.imageUrl}
+            alt={puzzle.displayName}
+            blurClass={blurClass}
+            guesses={guesses}
+            correctAnswer={puzzle.displayName}
+            isSolved={isSolved}
+            isFailed={isFailed}
+            onGuess={handleGuess}
+          />
+        </div>
+        <div className="flex-shrink-0">
+          <HintDisplay primaryHint={shownPrimaryHint} secondaryHint={shownSecondaryHint} />
+        </div>
       </div>
 
-      <GuessGrid guesses={guesses} correctAnswer={puzzle.displayName} />
-
-      {showPrimaryHint && puzzle.hintPrimary && (
-        <HintModal hint={puzzle.hintPrimary} isOpen={showPrimaryHint} onClose={() => setShowPrimaryHint(false)} />
-      )}
-
-      {showSecondaryHint && puzzle.hintSecondary && (
-        <HintModal hint={puzzle.hintSecondary} isOpen={showSecondaryHint} onClose={() => setShowSecondaryHint(false)} />
-      )}
-
-      {isSolved ? (
-        <Correct displayName={puzzle.displayName} />
-      ) : isFailed ? (
-        <Failure displayName={puzzle.displayName} />
-      ) : (
-        <GuessForm correctAnswer={puzzle.displayName} onGuess={handleGuess} />
-      )}
+      <HintModals
+        showPrimary={showPrimaryHint}
+        showSecondary={showSecondaryHint}
+        primaryHint={puzzle.hintPrimary}
+        secondaryHint={puzzle.hintSecondary}
+        onPrimaryClose={() => {
+          setShowPrimaryHint(false)
+          setShownPrimaryHint(puzzle.hintPrimary)
+        }}
+        onSecondaryClose={() => {
+          setShowSecondaryHint(false)
+          setShownSecondaryHint(puzzle.hintSecondary)
+        }}
+      />
 
       <Footer />
     </main>
