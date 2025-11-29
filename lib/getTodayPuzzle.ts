@@ -24,7 +24,7 @@ export async function getTodayPuzzle() {
     .single()
   if (error) throw new Error('No puzzle found for today')
 
-  const { data: urlData } = await supabase.storage.from('monkeys').getPublicUrl(data.image_path)
+  const { data: urlData } = supabase.storage.from('monkeys').getPublicUrl(data.image_path)
 
   return {
     date: data.puzzle_date,

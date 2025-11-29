@@ -86,6 +86,7 @@ export default function MonkeyPage() {
           alt={puzzle.displayName}
           width={300}
           height={300}
+          unoptimized
           className={`${blurClass} transition-all duration-300 rounded-xl`}
         />
       </div>
