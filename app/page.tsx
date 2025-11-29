@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getTodayPuzzle } from '@/lib/getTodayPuzzle'
 import { getBlur } from '@/lib/getBlur'
+import { hasSeenInstructions, markInstructionsAsSeen } from '@/lib/instructionsStorage'
 import { InstructionsModal } from './components/InstructionsModal'
 import { Footer } from './components/Footer'
 import { HintModals } from './components/HintModals'
@@ -13,8 +14,7 @@ import { HowItWorks } from './components/HowItWorks'
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
   const [isSolved, setIsSolved] = useState(false)
-  // TODO: use local storage to store the state of this
-  const [showInstructions, setShowInstructions] = useState(true)
+  const [showInstructions, setShowInstructions] = useState(false)
   const [puzzle, setPuzzle] = useState<{
     imageUrl: string
     displayName: string
@@ -29,6 +29,12 @@ export default function MonkeyPage() {
   const [shownSecondaryHint, setShownSecondaryHint] = useState<string | null>(null)
 
   const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
+
+  useEffect(() => {
+    if (!hasSeenInstructions()) {
+      setShowInstructions(true)
+    }
+  }, [])
 
   useEffect(() => {
     getTodayPuzzle()
@@ -71,7 +77,13 @@ export default function MonkeyPage() {
 
   return (
     <main className="min-h-screen flex flex-col pt-12 pb-12 px-4 relative">
-      <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
+      <InstructionsModal
+        isOpen={showInstructions}
+        onClose={() => {
+          setShowInstructions(false)
+          markInstructionsAsSeen()
+        }}
+      />
 
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
