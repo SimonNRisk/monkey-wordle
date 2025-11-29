@@ -100,20 +100,22 @@ export default function MonkeyPage() {
         </div>
       </div>
 
-      <HintModals
-        showPrimary={showPrimaryHint}
-        showSecondary={showSecondaryHint}
-        primaryHint={puzzle.hintPrimary}
-        secondaryHint={puzzle.hintSecondary}
-        onPrimaryClose={() => {
-          setShowPrimaryHint(false)
-          setShownPrimaryHint(puzzle.hintPrimary)
-        }}
-        onSecondaryClose={() => {
-          setShowSecondaryHint(false)
-          setShownSecondaryHint(puzzle.hintSecondary)
-        }}
-      />
+      {!isSolved && !isFailed && (
+        <HintModals
+          showPrimary={showPrimaryHint}
+          showSecondary={showSecondaryHint}
+          primaryHint={puzzle.hintPrimary}
+          secondaryHint={puzzle.hintSecondary}
+          onPrimaryClose={() => {
+            setShowPrimaryHint(false)
+            setShownPrimaryHint(puzzle.hintPrimary)
+          }}
+          onSecondaryClose={() => {
+            setShowSecondaryHint(false)
+            setShownSecondaryHint(puzzle.hintSecondary)
+          }}
+        />
+      )}
 
       <Footer />
     </main>
