@@ -8,6 +8,7 @@ import { Footer } from './components/Footer'
 import { HintModals } from './components/HintModals'
 import { HintDisplay } from './components/HintDisplay'
 import { GameColumn } from './components/GameColumn'
+import { HowItWorks } from './components/HowItWorks'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -78,8 +79,10 @@ export default function MonkeyPage() {
       />
       <div className="fixed inset-0 -z-10 bg-green-900/40" />
 
-      <div className="grid grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
-        <div></div>
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-8 max-w-6xl mx-auto w-full">
+        <div className="flex justify-end">
+          <HowItWorks />
+        </div>
         <div className="flex justify-center">
           <GameColumn
             imageUrl={puzzle.imageUrl}
@@ -92,7 +95,7 @@ export default function MonkeyPage() {
             onGuess={handleGuess}
           />
         </div>
-        <div className="flex-shrink-0">
+        <div className="flex justify-start">
           <HintDisplay primaryHint={shownPrimaryHint} secondaryHint={shownSecondaryHint} />
         </div>
       </div>
