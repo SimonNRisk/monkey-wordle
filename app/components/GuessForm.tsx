@@ -14,6 +14,7 @@ export function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     const trimmedGuess = guess.trim()
+    if (!trimmedGuess) return
     const isCorrect = checkFuzzyMatch(trimmedGuess, correctAnswer)
     onGuess(trimmedGuess, isCorrect)
     setGuess('')
@@ -30,7 +31,8 @@ export function GuessForm({ correctAnswer, onGuess }: GuessFormProps) {
       />
       <button
         type="submit"
-        className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg border-4 border-green-800 transform hover:scale-105 transition-all duration-200"
+        disabled={!guess.trim()}
+        className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg border-4 border-green-800 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-green-600"
       >
         Guess!
       </button>
