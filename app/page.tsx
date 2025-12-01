@@ -15,6 +15,7 @@ import { useOutcome } from './hooks/useOutcome'
 
 export default function MonkeyPage() {
   const [showInstructions, setShowInstructions] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [puzzle, setPuzzle] = useState<{
     date: string
     imageUrl: string
@@ -40,9 +41,15 @@ export default function MonkeyPage() {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true)
     getTodayPuzzle()
-      .then(setPuzzle)
-      .catch(() => {})
+      .then((puzzle) => {
+        setPuzzle(puzzle)
+        setIsLoading(false)
+      })
+      .catch(() => {
+        setIsLoading(false)
+      })
   }, [])
 
   useEffect(() => {
@@ -64,6 +71,21 @@ export default function MonkeyPage() {
     if (isCorrect) {
       setOutcome('success')
     }
+  }
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-4 relative">
+        <div
+          className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/jungle-background.webp)' }}
+        />
+        <div className="fixed inset-0 -z-10 bg-green-900/40" />
+        <div className="text-center bg-yellow-100/95 border-4 border-yellow-400 rounded-2xl px-8 py-6 shadow-2xl">
+          <p className="text-lg font-bold text-green-900">Loading today&apos;s monkey...</p>
+        </div>
+      </main>
+    )
   }
 
   if (!puzzle) {
