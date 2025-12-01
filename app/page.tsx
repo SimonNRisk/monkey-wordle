@@ -11,10 +11,10 @@ import { HintDisplay } from './components/HintDisplay'
 import { GameColumn } from './components/GameColumn'
 import { HowItWorks } from './components/HowItWorks'
 import { useGuesses } from './hooks/useGuesses'
+import { useOutcome } from './hooks/useOutcome'
 
 export default function MonkeyPage() {
-  const [numberOfGuesses, setNumberOfGuesses] = useState(0)
-  const [isSolved, setIsSolved] = useState(false)
+  const [outcome, setOutcome] = useOutcome()
   const [showInstructions, setShowInstructions] = useState(false)
   const [puzzle, setPuzzle] = useState<{
     imageUrl: string
@@ -24,12 +24,13 @@ export default function MonkeyPage() {
     hintSecondary: string | null
   } | null>(null)
   const [guesses, setGuesses] = useGuesses()
+  const numberOfGuesses = guesses.length
   const [showPrimaryHint, setShowPrimaryHint] = useState(false)
   const [showSecondaryHint, setShowSecondaryHint] = useState(false)
   const [shownPrimaryHint, setShownPrimaryHint] = useState<string | null>(null)
   const [shownSecondaryHint, setShownSecondaryHint] = useState<string | null>(null)
 
-  const blurClass = isSolved ? 'blur-none' : getBlur(numberOfGuesses)
+  const blurClass = outcome === 'success' ? 'blur-none' : getBlur(numberOfGuesses)
 
   useEffect(() => {
     if (!hasSeenInstructions()) {
@@ -51,11 +52,16 @@ export default function MonkeyPage() {
     }
   }, [numberOfGuesses])
 
+  useEffect(() => {
+    if (numberOfGuesses >= 6 && outcome !== 'success') {
+      setOutcome('failure')
+    }
+  }, [numberOfGuesses, outcome])
+
   const handleGuess = (guess: string, isCorrect: boolean) => {
     setGuesses((prevGuesses: string[]) => [...prevGuesses, guess])
-    setNumberOfGuesses(numberOfGuesses + 1)
     if (isCorrect) {
-      setIsSolved(true)
+      setOutcome('success')
     }
   }
 
@@ -74,7 +80,7 @@ export default function MonkeyPage() {
     )
   }
 
-  const isFailed = numberOfGuesses >= 6 && !isSolved
+  const isFailed = numberOfGuesses >= 6 && outcome === 'failure'
 
   return (
     <main className="min-h-screen flex flex-col pt-12 pb-12 px-4 relative">
@@ -103,7 +109,7 @@ export default function MonkeyPage() {
             blurClass={blurClass}
             guesses={guesses}
             correctAnswer={puzzle.displayName}
-            isSolved={isSolved}
+            isSolved={outcome === 'success'}
             isFailed={isFailed}
             onGuess={handleGuess}
           />
@@ -113,7 +119,7 @@ export default function MonkeyPage() {
         </div>
       </div>
 
-      {!isSolved && !isFailed && (
+      {outcome === 'failure' && (
         <HintModals
           showPrimary={showPrimaryHint}
           showSecondary={showSecondaryHint}
