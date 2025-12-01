@@ -142,7 +142,7 @@ export default function MonkeyPage() {
         </div>
       </div>
 
-      {outcome === 'failure' && (
+      {!isFailed && outcome !== 'success' && (
         <HintModals
           showPrimary={showPrimaryHint}
           showSecondary={showSecondaryHint}
