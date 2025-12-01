@@ -4,17 +4,27 @@ import { localStorageGetOutcome, localStorageSetOutcome } from '@/lib/outcomeSto
 type Outcome = 'success' | 'failure'
 type useOutcomeReturn = [Outcome | null, Dispatch<SetStateAction<Outcome | null>>]
 
-export function useOutcome(): useOutcomeReturn {
+export function useOutcome(puzzleDate: string | null): useOutcomeReturn {
   const [outcome, setOutcome] = useState<Outcome | null>(() => {
-    const storedOutcome = localStorageGetOutcome()
-    return storedOutcome ?? null
+    if (!puzzleDate) return null
+    return localStorageGetOutcome(puzzleDate) ?? null
   })
 
+  // Re-check storage when puzzleDate changes
   useEffect(() => {
-    if (outcome !== null) {
-      localStorageSetOutcome(outcome)
+    if (puzzleDate) {
+      const storedOutcome = localStorageGetOutcome(puzzleDate)
+      setOutcome(storedOutcome)
+    } else {
+      setOutcome(null)
     }
-  }, [outcome])
+  }, [puzzleDate])
+
+  useEffect(() => {
+    if (outcome !== null && puzzleDate) {
+      localStorageSetOutcome(outcome, puzzleDate)
+    }
+  }, [outcome, puzzleDate])
 
   return [outcome, setOutcome]
 }

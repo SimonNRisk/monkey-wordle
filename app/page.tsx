@@ -14,16 +14,17 @@ import { useGuesses } from './hooks/useGuesses'
 import { useOutcome } from './hooks/useOutcome'
 
 export default function MonkeyPage() {
-  const [outcome, setOutcome] = useOutcome()
   const [showInstructions, setShowInstructions] = useState(false)
   const [puzzle, setPuzzle] = useState<{
+    date: string
     imageUrl: string
     displayName: string
     slug: string
     hintPrimary: string | null
     hintSecondary: string | null
   } | null>(null)
-  const [guesses, setGuesses] = useGuesses()
+  const [guesses, setGuesses] = useGuesses(puzzle?.date ?? null)
+  const [outcome, setOutcome] = useOutcome(puzzle?.date ?? null)
   const numberOfGuesses = guesses.length
   const [showPrimaryHint, setShowPrimaryHint] = useState(false)
   const [showSecondaryHint, setShowSecondaryHint] = useState(false)

@@ -1,15 +1,34 @@
-// Need to implement TTL for these guesses, but I'll do that later.
-
 const GUESSES_KEY = 'monkey-wordle-guesses'
 
-export function localStorageGetGuesses(): string[] {
-  if (typeof window === 'undefined') return []
-  return JSON.parse(localStorage.getItem(GUESSES_KEY) || '[]')
+interface StoredGuesses {
+  guesses: string[]
+  puzzleDate: string
 }
 
-export function localStorageSetGuesses(guesses: string[]): void {
+export function localStorageGetGuesses(currentPuzzleDate: string | null): string[] {
+  if (typeof window === 'undefined') return []
+  if (!currentPuzzleDate) return []
+
+  const stored = localStorage.getItem(GUESSES_KEY)
+  if (!stored) return []
+
+  try {
+    const data: StoredGuesses = JSON.parse(stored)
+    // If puzzle date doesn't match, clear and return empty
+    if (data.puzzleDate !== currentPuzzleDate) {
+      localStorageClearGuesses()
+      return []
+    }
+    return data.guesses || []
+  } catch {
+    return []
+  }
+}
+
+export function localStorageSetGuesses(guesses: string[], puzzleDate: string): void {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(GUESSES_KEY, JSON.stringify(guesses))
+    const data: StoredGuesses = { guesses, puzzleDate }
+    localStorage.setItem(GUESSES_KEY, JSON.stringify(data))
   }
 }
 

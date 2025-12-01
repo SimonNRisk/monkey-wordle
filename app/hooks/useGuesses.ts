@@ -4,16 +4,28 @@ import { localStorageGetGuesses, localStorageSetGuesses } from '@/lib/guessStora
 // A Dispatch<SetStateAction<string[]>> is just a type of function that updates state (specifically for string[])
 type UseGuessesReturn = [string[], Dispatch<SetStateAction<string[]>>]
 
-export function useGuesses(): UseGuessesReturn {
+export function useGuesses(puzzleDate: string | null): UseGuessesReturn {
   const [guesses, setGuesses] = useState<string[]>(() => {
-    const storedGuesses = localStorageGetGuesses()
-    if (!storedGuesses) return []
-    return storedGuesses.length > 0 ? storedGuesses : []
+    if (!puzzleDate) return []
+    const storedGuesses = localStorageGetGuesses(puzzleDate)
+    return storedGuesses || []
   })
 
+  // Re-check storage when puzzleDate changes
   useEffect(() => {
-    localStorageSetGuesses(guesses)
-  }, [guesses])
+    if (puzzleDate) {
+      const storedGuesses = localStorageGetGuesses(puzzleDate)
+      setGuesses(storedGuesses)
+    } else {
+      setGuesses([])
+    }
+  }, [puzzleDate])
+
+  useEffect(() => {
+    if (puzzleDate) {
+      localStorageSetGuesses(guesses, puzzleDate)
+    }
+  }, [guesses, puzzleDate])
 
   return [guesses, setGuesses]
 }
