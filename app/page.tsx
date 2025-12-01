@@ -10,6 +10,7 @@ import { HintModals } from './components/HintModals'
 import { HintDisplay } from './components/HintDisplay'
 import { GameColumn } from './components/GameColumn'
 import { HowItWorks } from './components/HowItWorks'
+import { useGuesses } from './hooks/useGuesses'
 
 export default function MonkeyPage() {
   const [numberOfGuesses, setNumberOfGuesses] = useState(0)
@@ -22,7 +23,7 @@ export default function MonkeyPage() {
     hintPrimary: string | null
     hintSecondary: string | null
   } | null>(null)
-  const [guesses, setGuesses] = useState<string[]>([])
+  const [guesses, setGuesses] = useGuesses()
   const [showPrimaryHint, setShowPrimaryHint] = useState(false)
   const [showSecondaryHint, setShowSecondaryHint] = useState(false)
   const [shownPrimaryHint, setShownPrimaryHint] = useState<string | null>(null)
@@ -51,7 +52,7 @@ export default function MonkeyPage() {
   }, [numberOfGuesses])
 
   const handleGuess = (guess: string, isCorrect: boolean) => {
-    setGuesses([...guesses, guess])
+    setGuesses((prevGuesses: string[]) => [...prevGuesses, guess])
     setNumberOfGuesses(numberOfGuesses + 1)
     if (isCorrect) {
       setIsSolved(true)
