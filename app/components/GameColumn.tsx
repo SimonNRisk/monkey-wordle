@@ -1,8 +1,7 @@
 import { MonkeyImage } from './MonkeyImage'
 import { GuessGrid } from './GuessGrid'
 import { GuessForm } from './GuessForm'
-import { Correct } from './Correct'
-import { Failure } from './Failure'
+import { GameResult } from './GameResult'
 
 interface GameColumnProps {
   imageUrl: string
@@ -12,6 +11,7 @@ interface GameColumnProps {
   correctAnswer: string
   isSolved: boolean
   isFailed: boolean
+  puzzleDate: string
   onGuess: (guess: string, isCorrect: boolean) => void
 }
 
@@ -23,6 +23,7 @@ export function GameColumn({
   correctAnswer,
   isSolved,
   isFailed,
+  puzzleDate,
   onGuess
 }: GameColumnProps) {
   return (
@@ -30,9 +31,9 @@ export function GameColumn({
       <MonkeyImage imageUrl={imageUrl} alt={alt} blurClass={blurClass} />
       <GuessGrid guesses={guesses} correctAnswer={correctAnswer} />
       {isSolved ? (
-        <Correct displayName={correctAnswer} />
+        <GameResult outcome="success" displayName={correctAnswer} guessCount={guesses.length} puzzleDate={puzzleDate} />
       ) : isFailed ? (
-        <Failure displayName={correctAnswer} />
+        <GameResult outcome="failure" displayName={correctAnswer} guessCount={guesses.length} puzzleDate={puzzleDate} />
       ) : (
         <GuessForm correctAnswer={correctAnswer} onGuess={onGuess} />
       )}

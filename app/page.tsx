@@ -10,6 +10,7 @@ import { HintModals } from './components/HintModals'
 import { HintDisplay } from './components/HintDisplay'
 import { GameColumn } from './components/GameColumn'
 import { HowItWorks } from './components/HowItWorks'
+import { StatsPanel } from './components/StatsPanel'
 import { useGuesses } from './hooks/useGuesses'
 import { useOutcome } from './hooks/useOutcome'
 
@@ -134,11 +135,18 @@ export default function MonkeyPage() {
             correctAnswer={puzzle.displayName}
             isSolved={outcome === 'success'}
             isFailed={isFailed}
+            puzzleDate={puzzle.date}
             onGuess={handleGuess}
           />
         </div>
         <div className="flex justify-start">
-          <HintDisplay primaryHint={shownPrimaryHint} secondaryHint={shownSecondaryHint} />
+          <div className="flex flex-col gap-3">
+            <StatsPanel
+              puzzleDate={puzzle.date}
+              userGuessCount={outcome === 'success' ? guesses.length : isFailed ? 7 : undefined}
+            />
+            <HintDisplay primaryHint={shownPrimaryHint} secondaryHint={shownSecondaryHint} />
+          </div>
         </div>
       </div>
 
